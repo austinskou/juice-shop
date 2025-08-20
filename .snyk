@@ -2,4 +2,4 @@
 version: v1.25.0
 exclude:
   code:
-    - "two-factor-auth-service.spec.ts"
+# - "two-factor-auth-service.spec.ts"
