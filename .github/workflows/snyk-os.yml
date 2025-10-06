@@ -1,6 +1,7 @@
 name: Snyk Dependency Scan
 
 on:
+  workflow_dispatch:
   push:
     branches: ['*']
   pull_request:
@@ -26,5 +27,11 @@ jobs:
         run: snyk auth "${{ secrets.SNYK_TOKEN }}"
 
       - name: Run Snyk test on all projects
-        run: snyk test --all-projects --severity-threshold=medium --json
+        run: snyk test --all-projects --severity-threshold=medium --json > snyk-deps.json
         continue-on-error: true
+
+      - name: Upload dependency scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-deps-json
+          path: snyk-deps.json
