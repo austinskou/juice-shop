@@ -1,6 +1,7 @@
 name: Snyk Code Scan
 
 on:
+  workflow_dispatch:
   push:
     branches: ['*']
   pull_request:
