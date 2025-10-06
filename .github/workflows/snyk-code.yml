@@ -25,8 +25,8 @@ jobs:
       - name: Authenticate with Snyk
         run: snyk auth "${{ secrets.SNYK_TOKEN }}"
 
-      - name: Run Snyk Code scan
-        run: snyk code test --sarif-file-output=snyk-code.sarif --include-ignores --severity-threshold=medium
+      - name: Run full Snyk Code scan
+        run: snyk code test --sarif-file-output=snyk-code.sarif --severity-threshold=medium
         continue-on-error: true
 
       - name: Upload SARIF to GitHub
