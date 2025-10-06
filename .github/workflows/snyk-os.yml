@@ -1,4 +1,4 @@
-name: Snyk Code Scan
+name: Snyk Dependency Scan
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
     branches: ['*']
 
 jobs:
-  snyk-code:
+  snyk-deps:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,17 +26,12 @@ jobs:
       - name: Authenticate with Snyk
         run: snyk auth "${{ secrets.SNYK_TOKEN }}"
 
-      - name: Run full Snyk Code scan
-        run: snyk code test --sarif-file-output=snyk-code.sarif --severity-threshold=medium
+      - name: Run Snyk test on all projects
+        run: snyk test --all-projects --severity-threshold=medium --json > snyk-deps.json
         continue-on-error: true
 
-      - name: Upload SARIF to GitHub
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: snyk-code.sarif
-
-      - name: Upload SARIF as artifact
+      - name: Upload dependency scan results
         uses: actions/upload-artifact@v4
         with:
-          name: snyk-code-sarif
-          path: snyk-code.sarif
+          name: snyk-deps-json
+          path: snyk-deps.json
