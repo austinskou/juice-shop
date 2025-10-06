@@ -34,3 +34,9 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk-code.sarif
+
+      - name: Upload SARIF as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-code-sarif
+          path: snyk-code.sarif
