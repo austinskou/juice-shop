@@ -26,4 +26,10 @@ jobs:
         run: snyk auth "${{ secrets.SNYK_TOKEN }}"
 
       - name: Run Snyk Code scan
-        run: snyk code test --include-ignores --severity-threshold=medium
+        run: snyk code test --sarif-file-output=snyk-code.sarif --include-ignores --severity-threshold=medium
+        continue-on-error: true
+
+      - name: Upload SARIF to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk-code.sarif
